@@ -13,3 +13,5 @@ Quick Start for I2B2 using docker compose
     
 ## to use postgresql container
     7. in step 1 cd to pg folder
+
+### For assistance email: support@i2b2clinical.com
