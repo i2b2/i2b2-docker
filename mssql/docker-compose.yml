@@ -1,0 +1,88 @@
+#author: Kavishwar Wagholikar
+#email: kwagholikar@mgh.harvard.edu
+
+version: '3.5'
+
+services:
+
+  i2b2-web:
+    image: i2b2/i2b2-web:${I2B2_WEB_TAG}
+    container_name: i2b2-web
+    ports:
+      - "80:80"
+      - "443:443"
+    command: /run-httpd.sh localhost
+    networks:
+      - i2b2-net
+    depends_on:
+      - i2b2-wildfly
+
+
+  i2b2-wildfly:
+    image: i2b2/i2b2-wildfly:${I2B2_WILDFLY_TAG}
+    container_name: i2b2-wildfly
+    environment:
+      - DS_TYPE=${I2B2_DS_TYPE}
+      - DS_IP=${I2B2_DS_IP}
+      - DS_PORT=${I2B2_DS_PORT}
+      - DS_PM_USER=${I2B2_DS_PM_USER}
+      - DS_WD_USER=${I2B2_DS_WD_USER}
+      - DS_HIVE_USER=${I2B2_DS_HIVE_USER}
+      - DS_PM_PASS=${I2B2_DS_PM_PASS}
+      - DS_WD_PASS=${I2B2_DS_WD_PASS}
+      - DS_HIVE_PASS=${I2B2_DS_HIVE_PASS}
+
+      - DS_CRC_IP=${I2B2_DS_CRC_IP}
+      - DS_CRC_PORT=${I2B2_DS_CRC_PORT}
+      - DS_CRC_USER=${I2B2_DS_CRC_USER}
+      - DS_CRC_PASS=${I2B2_DS_CRC_PASS}
+      - DS_CRC_DB=${I2B2_DS_CRC_DB}
+      
+      - DS_ONT_IP=${I2B2_DS_ONT_IP}
+      - DS_ONT_PORT=${I2B2_DS_ONT_PORT}
+      - DS_ONT_USER=${I2B2_DS_ONT_USER}
+      - DS_ONT_PASS=${I2B2_DS_ONT_PASS}
+      - DS_ONT_DB=${I2B2_DS_ONT_DB}
+     
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    networks:
+      - i2b2-net
+    depends_on:
+      - i2b2-mssql
+
+
+  i2b2-mssql-vol-loader:
+    image: i2b2/i2b2-mssql-vol:${I2B2_WILDFLY_TAG}
+    container_name: i2b2-mssql-vol-loader
+    volumes:
+      - i2b2-mssql-vol:/var/opt/mssql
+    entrypoint: /bin/sh
+    networks:
+      - i2b2-net
+
+  i2b2-mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: i2b2-mssql
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${I2B2_MSSQL_SA_PASSWORD}
+    networks:
+      - i2b2-net
+    volumes:
+      - i2b2-mssql-vol:/var/opt/mssql
+    depends_on:
+      - i2b2-mssql-vol-loader
+
+networks:
+  i2b2-net:
+    name: i2b2-net
+    driver: bridge
+
+volumes:
+  i2b2-mssql-vol:
+    name: i2b2-mssql-vol
+
