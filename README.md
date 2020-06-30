@@ -1,4 +1,4 @@
-# i2b2-qs
+# i2b2-docker
 Quick Start for I2B2 using docker compose
 
 ## steps
