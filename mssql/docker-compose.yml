@@ -54,7 +54,7 @@ services:
 
 
   i2b2-mssql-vol-loader:
-    image: i2b2/i2b2-mssql-vol:${I2B2_WILDFLY_TAG}
+    image: i2b2/i2b2-mssql-vol:${I2B2_MSSQL_TAG}
     container_name: i2b2-mssql-vol-loader
     volumes:
       - i2b2-mssql-vol:/var/opt/mssql
