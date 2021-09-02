@@ -51,7 +51,6 @@ services:
       - i2b2-net
     depends_on:
       - i2b2-pg
-#      - i2b2-mssql
 
 
   i2b2-pg-vol-loader:
@@ -76,31 +75,6 @@ services:
       - i2b2-pg-vol:/var/lib/postgresql/data
     depends_on:
       - i2b2-pg-vol-loader
-
-
-  i2b2-mssql-vol-loader:
-    image: i2b2/i2b2-act-mssql-vol:i2b2-release-v1.7.12.0001-act-v2.0.2
-    container_name: i2b2-mssql-vol-loader
-    volumes:
-      - i2b2-mssql-vol:/var/opt/mssql
-    entrypoint: /bin/sh
-    networks:
-      - i2b2-net
-
-  i2b2-mssql:
-    image: mcr.microsoft.com/mssql/server:2017-latest
-    container_name: i2b2-mssql
-    ports:
-      - "1433:1433"
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=${I2B2_MSSQL_SA_PASSWORD}
-    networks:
-      - i2b2-net
-    volumes:
-      - i2b2-mssql-vol:/var/opt/mssql
-    depends_on:
-      - i2b2-mssql-vol-loader
 
 
 networks:
