@@ -40,10 +40,7 @@ services:
       - DS_ONT_USER=${I2B2_DS_ONT_USER}
       - DS_ONT_PASS=${I2B2_DS_ONT_PASS}
       - DS_ONT_DB=${I2B2_DS_ONT_DB}
-#    volumes:
-#       - ./i2b2.war:/opt/jboss/wildfly/customization/i2b2.war
-#      - ./postgresql-42.2.8.jar:/opt/jboss/wildfly/customization/postgresql-42.2.8.jar
-#      - ./execute.sh:/opt/jboss/wildfly/customization/execute.sh
+
     ports:
       - "8080:8080"
       - "9990:9990"
@@ -83,7 +80,5 @@ networks:
     driver: bridge
 
 volumes:
-  i2b2-mssql-vol:
-    name: i2b2-mssql-vol
   i2b2-pg-vol:
     name: i2b2-pg-vol
