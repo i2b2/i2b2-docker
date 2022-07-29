@@ -2,8 +2,8 @@
 Quick Start for I2B2 using docker compose
 
 ## steps
-    1. git clone https://github.com/i2b2-cdi/i2b2-docker
-    2. cd mssql	
+    1. git clone https://github.com/i2b2/i2b2-docker
+    2. cd i2b2-docker/mssql	
     3. docker-compose up -d 
     4. verify that webclient is working on http://localhost/webclient
     
@@ -13,6 +13,6 @@ Quick Start for I2B2 using docker compose
     7. repeat steps 1 and 2 
     
 ## to use postgresql container
-    8. in step 2 cd to pg folder
+    8. in step 2 cd to i2b2-docker/pg folder
 
 For assistance email: support@i2b2clinical.org
