@@ -16,3 +16,8 @@ Quick Start for I2B2 using docker compose
     8. in step 2 cd to i2b2-docker/pg folder
 
 For assistance email: support@i2b2clinical.org
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
