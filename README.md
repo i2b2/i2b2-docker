@@ -1,18 +1,19 @@
-# i2b2-docker
-Quick Start for I2B2 using docker compose
+git clone https://github.com/devi2b2/i2b2-docker.git
 
-## steps
-    1. git clone https://github.com/i2b2/i2b2-docker
-    2. cd i2b2-docker/mssql	
-    3. docker-compose up -d 
-    4. verify that webclient is working on http://localhost/webclient
-    
-## to connect to diffirent data sources for the i2b2 cells
-    5. docker-compose down
-    6. modify .env file
-    7. repeat steps 1 and 2 
-    
-## to use postgresql container
-    8. in step 2 cd to i2b2-docker/pg folder
+**Steps for Setting Up i2b2 Postgres (Ubuntu)**
+ 
+1. Navigate to the i2b2-docker directory.
+2. Execute the following command to start the i2b2:
+```
+cd pg
+docker-compose up -d i2b2-web
+```
 
-For assistance email: support@i2b2clinical.org
+3. Wait for WildFly to start.
+4. Open a web browser and navigate to the following URL:
+```
+http://localhost/webclient
+```
+5. Log in to the i2b2 web application using the default credentials:
+   - Username: demo
+   - Password: demouser

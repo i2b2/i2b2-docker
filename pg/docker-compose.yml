@@ -1,34 +1,27 @@
-version: '3.5'
-
 services:
 
   i2b2-web:
-    image: i2b2/i2b2-web:${I2B2_WEB_TAG}
+    image: i2b2/i2b2-web:${I2B2_WEB_TAG} 
     container_name: i2b2-web
+    restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
+      - "444:443"
     command: /run-httpd.sh localhost
-    networks:
-      - i2b2-net
     depends_on:
       - i2b2-wildfly
-
+    networks:
+      - i2b2-net
 
   i2b2-wildfly:
     image: i2b2/i2b2-wildfly:${I2B2_WILDFLY_TAG}
     container_name: i2b2-wildfly
+    restart: unless-stopped
     environment:
       - DS_TYPE=${I2B2_DS_TYPE}
       - DS_IP=${I2B2_DS_IP}
       - DS_PORT=${I2B2_DS_PORT}
-      - DS_PM_USER=${I2B2_DS_PM_USER}
-      - DS_WD_USER=${I2B2_DS_WD_USER}
-      - DS_HIVE_USER=${I2B2_DS_HIVE_USER}
-      - DS_PM_PASS=${I2B2_DS_PM_PASS}
-      - DS_WD_PASS=${I2B2_DS_WD_PASS}
-      - DS_HIVE_PASS=${I2B2_DS_HIVE_PASS}
-
+      
       - DS_CRC_IP=${I2B2_DS_CRC_IP}
       - DS_CRC_PORT=${I2B2_DS_CRC_PORT}
       - DS_CRC_USER=${I2B2_DS_CRC_USER}
@@ -41,44 +34,38 @@ services:
       - DS_ONT_PASS=${I2B2_DS_ONT_PASS}
       - DS_ONT_DB=${I2B2_DS_ONT_DB}
 
-    ports:
-      - "8080:8080"
-      - "9990:9990"
+      - DS_PM_IP=${I2B2_DS_PM_IP}
+      - DS_PM_PORT=${I2B2_DS_PM_PORT}
+      - DS_PM_USER=${I2B2_DS_PM_USER}
+      - DS_PM_PASS=${I2B2_DS_PM_PASS}
+      - DS_PM_DB=${I2B2_DS_PM_DB}
+
+      - DS_HIVE_IP=${I2B2_DS_HIVE_IP}
+      - DS_HIVE_PORT=${I2B2_DS_HIVE_PORT}
+      - DS_HIVE_USER=${I2B2_DS_HIVE_USER}
+      - DS_HIVE_PASS=${I2B2_DS_HIVE_PASS}
+      - DS_HIVE_DB=${I2B2_DS_HIVE_DB}
+
+      - DS_WD_IP=${I2B2_DS_WD_IP}
+      - DS_WD_PORT=${I2B2_DS_WD_PORT}
+      - DS_WD_USER=${I2B2_DS_WD_USER}
+      - DS_WD_PASS=${I2B2_DS_WD_PASS}
+      - DS_WD_DB=${I2B2_DS_WD_DB}
+
     networks:
       - i2b2-net
     depends_on:
       - i2b2-pg
 
-
-  i2b2-pg-vol-loader:
-    image: i2b2/i2b2-pg-vol:${I2B2_PG_TAG}
-    container_name: i2b2-pg-vol-loader
-    volumes:
-      - i2b2-pg-vol:/var/lib/postgresql/data
-    entrypoint: /bin/sh
-    networks:
-      - i2b2-net
-
   i2b2-pg:
-    image: postgres:12
+    image: i2b2/i2b2-pg:${I2B2_PG_TAG}
     container_name: i2b2-pg
-    ports:
-      - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_PASSWORD=${I2B2_PG_PASS}
     networks:
       - i2b2-net
-    volumes:
-      - i2b2-pg-vol:/var/lib/postgresql/data
-    depends_on:
-      - i2b2-pg-vol-loader
-
 
 networks:
   i2b2-net:
     name: i2b2-net
     driver: bridge
-
-volumes:
-  i2b2-pg-vol:
-    name: i2b2-pg-vol
