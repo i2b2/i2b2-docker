@@ -19,38 +19,41 @@ services:
     restart: unless-stopped
     environment:
       - DS_TYPE=${I2B2_DS_TYPE}
-      - DS_IP=${I2B2_DS_IP}
-      - DS_PORT=${I2B2_DS_PORT}
-      
+     
       - DS_CRC_IP=${I2B2_DS_CRC_IP}
       - DS_CRC_PORT=${I2B2_DS_CRC_PORT}
       - DS_CRC_USER=${I2B2_DS_CRC_USER}
       - DS_CRC_PASS=${I2B2_DS_CRC_PASS}
       - DS_CRC_DB=${I2B2_DS_CRC_DB}
+      - DS_CRC_SCHEMA=${I2B2_DS_CRC_SCHEMA}
       
       - DS_ONT_IP=${I2B2_DS_ONT_IP}
       - DS_ONT_PORT=${I2B2_DS_ONT_PORT}
       - DS_ONT_USER=${I2B2_DS_ONT_USER}
       - DS_ONT_PASS=${I2B2_DS_ONT_PASS}
       - DS_ONT_DB=${I2B2_DS_ONT_DB}
+      - DS_ONT_SCHEMA=${I2B2_DS_ONT_SCHEMA}
 
       - DS_PM_IP=${I2B2_DS_PM_IP}
       - DS_PM_PORT=${I2B2_DS_PM_PORT}
       - DS_PM_USER=${I2B2_DS_PM_USER}
       - DS_PM_PASS=${I2B2_DS_PM_PASS}
       - DS_PM_DB=${I2B2_DS_PM_DB}
+      - DS_PM_SCHEMA=${I2B2_DS_PM_SCHEMA}
 
       - DS_HIVE_IP=${I2B2_DS_HIVE_IP}
       - DS_HIVE_PORT=${I2B2_DS_HIVE_PORT}
       - DS_HIVE_USER=${I2B2_DS_HIVE_USER}
       - DS_HIVE_PASS=${I2B2_DS_HIVE_PASS}
       - DS_HIVE_DB=${I2B2_DS_HIVE_DB}
+      - DS_HIVE_SCHEMA=${I2B2_DS_HIVE_SCHEMA}
 
       - DS_WD_IP=${I2B2_DS_WD_IP}
       - DS_WD_PORT=${I2B2_DS_WD_PORT}
       - DS_WD_USER=${I2B2_DS_WD_USER}
       - DS_WD_PASS=${I2B2_DS_WD_PASS}
       - DS_WD_DB=${I2B2_DS_WD_DB}
+      - DS_WD_SCHEMA=${I2B2_DS_WD_SCHEMA}
 
     networks:
       - i2b2-net
