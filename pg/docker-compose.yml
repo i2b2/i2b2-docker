@@ -1,21 +1,21 @@
 services:
 
-  i2b2-web:
-    image: i2b2/i2b2-web:${I2B2_WEB_TAG} 
-    container_name: i2b2-web
+  i2b2-webclient:
+    image: i2b2/i2b2-webclient:${I2B2_WEBCLIENT_TAG} 
+    container_name: i2b2-webclient
     restart: unless-stopped
     ports:
       - "80:80"
       - "444:443"
     command: /run-httpd.sh localhost
     depends_on:
-      - i2b2-wildfly
+      - i2b2-core-server
     networks:
       - i2b2-net
 
-  i2b2-wildfly:
-    image: i2b2/i2b2-wildfly:${I2B2_WILDFLY_TAG}
-    container_name: i2b2-wildfly
+  i2b2-core-server:
+    image: i2b2/i2b2-core-server:${I2B2_CORE_SERVER_TAG}
+    container_name: i2b2-core-server
     restart: unless-stopped
     environment:
       - DS_TYPE=${I2B2_DS_TYPE}
@@ -58,11 +58,11 @@ services:
     networks:
       - i2b2-net
     depends_on:
-      - i2b2-pg
+      - i2b2-data-pgsql
 
-  i2b2-pg:
-    image: i2b2/i2b2-pg:${I2B2_PG_TAG}
-    container_name: i2b2-pg
+  i2b2-data-pgsql:
+    image: i2b2/i2b2-data-pgsql:${I2B2_DATA_PGSQL_TAG}
+    container_name: i2b2-data-pgsql
     environment:
       - POSTGRES_PASSWORD=${I2B2_PG_PASS}
     networks:
