@@ -8,7 +8,7 @@ git clone https://github.com/i2b2/i2b2-docker.git
 2. Execute the following command to start the i2b2:
 ```
 cd pg
-docker-compose up -d i2b2-web
+docker-compose up -d i2b2-webclient
 ```
 
 3. Wait for WildFly to start.
