@@ -1,4 +1,3 @@
-sudo DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
 
 sudo apt-get install -y postgresql-16 postgresql-contrib-16
@@ -17,6 +16,3 @@ service postgresql restart
 echo "waiting for local database to get started "
 sleep 100
 
-
-#sudo -u postgres psql -c "alter user postgres with PASSWORD 'demoprod';"
- 
