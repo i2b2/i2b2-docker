@@ -64,7 +64,7 @@ services:
   i2b2-data-oracle:
     image: i2b2/i2b2-data-oracle:${I2B2_DATA_ORACLE_TAG}
     container_name: i2b2-data-oracle
-
+    restart: unless-stopped
     environment:
       - ORACLE_PWD=${I2B2_ORACLE_PASS}
     networks:
