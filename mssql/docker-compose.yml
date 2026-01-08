@@ -58,6 +58,12 @@ services:
       - DS_WD_PASS=${I2B2_DS_WD_PASS}
       - DS_WD_DB=${I2B2_DS_WD_DB}
 
+      - DS_IM_IP=${I2B2_DS_IM_IP}
+      - DS_IM_PORT=${I2B2_DS_IM_PORT}
+      - DS_IM_USER=${I2B2_DS_IM_USER}
+      - DS_IM_PASS=${I2B2_DS_IM_PASS}
+      - DS_IM_DB=${I2B2_DS_IM_DB}      
+
     networks:
       - i2b2-net
     # volumes:
