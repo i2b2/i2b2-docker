@@ -29,7 +29,7 @@ docker exec -i i2b2-core-server bash -c "apt-get install -y ant git vim"
 # dpkg-reconfigure -f noninteractive tzdata "
 
 #cloning i2b2-core-server repo
-docker exec -e i2b2_core_server_branch=$i2b2_core_server_branch -i i2b2-core-server bash -c "cd /opt/jboss/wildfly && git clone http://github.com/i2b2/i2b2-core-server -b $i2b2_core_server_branch"
+docker exec -e i2b2_core_server_branch=$i2b2_core_server_branch -i i2b2-core-server bash -c "cd /opt/jboss/wildfly && git clone http://github.com/adityapersistent/i2b2-core-server -b $i2b2_core_server_branch"
 
 #using mssql-jdbc-8.2.2.jre8.jar jdbc mssql driver for testing
 docker exec -i i2b2-core-server bash -c "cp -v /opt/jboss/wildfly/customization/mssql-jdbc-8.2.2.jre8.jar /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.server-common/lib/jdbc/"
