@@ -58,4 +58,4 @@ docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"
 docker exec -i i2b2-core-server bash -c "sed -i 's/showoutput=\"false\"/showoutput=\"true\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
  
 # running ant test cases
-docker exec -i i2b2-core-server bash -c " cd /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.server-common &&  ant -v && ant init && cd ../edu.harvard.i2b2.pm/ && ant test && cd ../edu.harvard.i2b2.ontology/ && ant test && cd ../edu.harvard.i2b2.crc/ && ant test && cat test-reports/TEST-edu.harvard.i2b2.crc.axis2.SetfinderQueryTest.xml && cd ../edu.harvard.i2b2.workplace/ && ant test && cd ../edu.harvard.i2b2.im/ && ant test"
+docker exec -i i2b2-core-server bash -c " cd /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.server-common &&  ant -v && ant init && cd ../edu.harvard.i2b2.pm/ && ant test && cd ../edu.harvard.i2b2.ontology/ && ant test && cd ../edu.harvard.i2b2.crc/ && ant test && cd ../edu.harvard.i2b2.workplace/ && ant test && cd ../edu.harvard.i2b2.im/ && ant test"
