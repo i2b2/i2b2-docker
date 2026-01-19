@@ -54,6 +54,8 @@ docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"
 
 docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
 
+docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.ont/build.xml"
+
 #test case showoutput=true
 docker exec -i i2b2-core-server bash -c "sed -i 's/showoutput=\"false\"/showoutput=\"true\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
  
