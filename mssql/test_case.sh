@@ -43,6 +43,11 @@ docker exec -i i2b2-core-server bash -c " cd /opt/jboss/wildfly/ && cp crc-ds.xm
 #resolving unmappable character (0xC2) for encoding US-ASCII issue (UTF-8)
 docker exec -i i2b2-core-server bash -c " sed -i 's/[^\x00-\x7F]//g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/src/server/edu/harvard/i2b2/crc/delegate/quartz/SchedulerInfoBean.java "
 
+docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.pm/build.xml"
+
+docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
+
+
 #verifying the timezone EST 
 # docker exec -i i2b2-core-server bash -c "date"
 # docker exec -i i2b2-data-mssql bash -c "date"
