@@ -6,7 +6,7 @@ services:
     container_name: i2b2-webclient
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
       - "444:443"
     command: /run-httpd.sh localhost
     depends_on:
