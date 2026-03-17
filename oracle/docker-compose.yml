@@ -6,7 +6,7 @@ services:
 
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
       - "444:443"
     command: /run-httpd.sh localhost
     # volumes:
@@ -54,6 +54,12 @@ services:
       - DS_WD_PORT=${I2B2_DS_WD_PORT}
       - DS_WD_USER=${I2B2_DS_WD_USER}
       - DS_WD_PASS=${I2B2_DS_WD_PASS}
+
+      - DS_IM_IP=${I2B2_DS_IM_IP}
+      - DS_IM_PORT=${I2B2_DS_IM_PORT}
+      - DS_IM_USER=${I2B2_DS_IM_USER}
+      - DS_IM_PASS=${I2B2_DS_IM_PASS}
+
     # volumes:
     #   - ./custom_datasource.txt:/opt/jboss/wildfly/customization/custom_datasource.txt
     networks:

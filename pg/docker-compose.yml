@@ -5,7 +5,7 @@ services:
     container_name: i2b2-webclient
     restart: unless-stopped
     ports:
-      - "80:8080"
+      - "8080:80"
     command: /run-httpd.sh localhost
     # volumes:
     # - ../assets/logo.png:/var/www/html/webclient/assets/images/logo.png

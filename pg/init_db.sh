@@ -1,4 +1,4 @@
-#for testing locally 
+# prerequisite - i2b2 docker demo working
 #sh init_db.sh dummy_host 5432 i2b2 demouser i2b2 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
 
 #sh init_db.sh target_ip target_port target_username target_password target_db_name target_crc_schema target_ont_schema target_pm_schema target_hive_schema target_wd_schema core_server_ip core_server_port
