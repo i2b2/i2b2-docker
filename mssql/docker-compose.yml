@@ -6,7 +6,7 @@ services:
     container_name: i2b2-webclient
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
       - "444:443"
     command: /run-httpd.sh localhost
     depends_on:
@@ -57,6 +57,12 @@ services:
       - DS_WD_USER=${I2B2_DS_WD_USER}
       - DS_WD_PASS=${I2B2_DS_WD_PASS}
       - DS_WD_DB=${I2B2_DS_WD_DB}
+
+      - DS_IM_IP=${I2B2_DS_IM_IP}
+      - DS_IM_PORT=${I2B2_DS_IM_PORT}
+      - DS_IM_USER=${I2B2_DS_IM_USER}
+      - DS_IM_PASS=${I2B2_DS_IM_PASS}
+      - DS_IM_DB=${I2B2_DS_IM_DB}      
 
     networks:
       - i2b2-net
