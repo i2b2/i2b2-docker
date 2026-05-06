@@ -60,16 +60,16 @@ fi
 if [ "$TARGET_SERVER" = "localhost" ]; then
     echo "Local setup detected. Starting Oracle 23ai Docker container..."
 
-    # docker run -d \
-    # --name oracle23 \
-    # -p 1522:1521 \
-    # -e ORACLE_PWD="$TARGET_ORACLE_PWD" \
-    # -v "/home/runner/work/i2b2-data/i2b2-data/:/i2b2" \
-    # --network i2b2-net \
-    # container-registry.oracle.com/database/free:latest
+    docker run -d \
+    --name oracle23 \
+    -p 1522:1521 \
+    -e ORACLE_PWD="$TARGET_ORACLE_PWD" \
+    -v "/home/runner/work/i2b2-data/i2b2-data/:/i2b2" \
+    --network i2b2-net \
+    container-registry.oracle.com/database/free:latest
         
     echo "Waiting for Oracle database to initialize (sleeping for 100 seconds)..."
-    # sleep 100
+    sleep 100
     echo "Oracle 23ai container is ready!"
 fi
 
