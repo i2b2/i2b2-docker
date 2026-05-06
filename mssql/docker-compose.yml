@@ -1,4 +1,3 @@
-version: '3.5'
 
 services:
   i2b2-webclient:
@@ -19,7 +18,7 @@ services:
       - i2b2-net
 
   i2b2-core-server:
-    image: i2b2/i2b2-core-server:${I2B2_CORE_SERVER_TAG}
+    image: adityapersistent/demo_adi:i2b2-core-server_master #i2b2/i2b2-core-server:${I2B2_CORE_SERVER_TAG}
     container_name: i2b2-core-server
     restart: unless-stopped
     environment:
@@ -73,7 +72,7 @@ services:
 
 
   i2b2-data-mssql:
-    image: i2b2/i2b2-data-mssql:${I2B2_DATA_MSSQL_TAG}
+    image: adityapersistent/demo_adi:i2b2-data-mssql_master #i2b2/i2b2-data-mssql:${I2B2_DATA_MSSQL_TAG}
     container_name: i2b2-data-mssql
     restart: unless-stopped
     user: root

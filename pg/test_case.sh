@@ -23,8 +23,7 @@ cd test_case_integration/
 docker cp . i2b2-core-server:/opt/jboss/wildfly/
 
 #install apt & git
-#fixing : Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
-docker exec -i i2b2-core-server bash -c "apt-get clean  && apt-get update --fix-missing"
+docker exec -i i2b2-core-server bash -c "apt-get update "
 docker exec -i i2b2-core-server bash -c "apt-get install -y ant git vim"
 
 #set timezone to EST - using old core-server image - it will set only for this terminal session
@@ -33,7 +32,7 @@ docker exec -i i2b2-core-server bash -c "apt-get install -y ant git vim"
 # dpkg-reconfigure -f noninteractive tzdata "
 
 #cloning i2b2-core-server repo
-docker exec -e i2b2_core_server_branch=$i2b2_core_server_branch -i i2b2-core-server bash -c "cd /opt/jboss/wildfly && git clone http://github.com/i2b2/i2b2-core-server -b $i2b2_core_server_branch"
+docker exec -e i2b2_core_server_branch=$i2b2_core_server_branch -i i2b2-core-server bash -c "cd /opt/jboss/wildfly && git clone http://github.com/adityapersistent/i2b2-core-server -b $i2b2_core_server_branch"
 
 #updating jboss location & core-server services URL
 docker exec -i i2b2-core-server bash -c " cd /opt/jboss/wildfly/  && cp build.properties i2b2-core-server/edu.harvard.i2b2.crc/build.properties && cp build.properties i2b2-core-server/edu.harvard.i2b2.fr/build.properties  && cp build.properties i2b2-core-server/edu.harvard.i2b2.im/build.properties  && cp build.properties i2b2-core-server/edu.harvard.i2b2.ontology/build.properties  && cp build.properties i2b2-core-server/edu.harvard.i2b2.pm/build.properties && cp build.properties i2b2-core-server/edu.harvard.i2b2.workplace/build.properties && sed -i 's|jboss.home=/opt/wildfly-37\.0\.1\.Final|jboss.home=/opt/jboss/wildfly|' i2b2-core-server/edu.harvard.i2b2.server-common/build.properties "
@@ -48,9 +47,6 @@ docker exec -i i2b2-core-server bash -c " sed -i 's/[^\x00-\x7F]//g' /opt/jboss/
 #verifying the timezone EST 
 # docker exec -i i2b2-core-server bash -c "date"
 # docker exec -i i2b2-data-pgsql bash -c "date" 
-
-#temp fix for failing test cases - build will be successfull
-docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.pm/build.xml"
 
 docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
 
