@@ -10,7 +10,7 @@
 #                             <TARGET_ONT_SCHEMA> <TARGET_PM_SCHEMA> <TARGET_HIVE_SCHEMA> \
 #                             <TARGET_WD_SCHEMA> <CORE_SERVER_IP> <CORE_SERVER_PORT>
 # Example:
-#   sh reconfigure_pm_hive.sh localhost 5432 i2b2 demouser i2b2 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
+#   sh reconfigure_pm_hive.sh local-db-ip 5432 i2b2 demouser i2b2 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
 # ==============================================================================
 
 # Exit immediately if a command exits with a non-zero status
@@ -37,7 +37,7 @@ TARGET_WD_SCHEMA="${10}"
 CORE_SERVER_IP="${11}"
 CORE_SERVER_PORT="${12}"
 
-if [ "$TARGET_SERVER" = "localhost" ]; then
+if [ "$TARGET_SERVER" = "local-db-ip" ]; then
     docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}')
     TARGET_SERVER="$docker_network_gateway_ip"
     echo "Target Server IP- $TARGET_SERVER" 

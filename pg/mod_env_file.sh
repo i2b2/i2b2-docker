@@ -7,7 +7,7 @@
 # Usage: 
 #   sh mod_env_file.sh <TARGET_HOST> <TARGET_PORT> <TARGET_USER> <TARGET_PASS> <TARGET_DB>
 # Example:
-#   sh mod_env_file.sh localhost 5432 i2b2 demouser i2b2
+#   sh mod_env_file.sh local-db-ip 5432 i2b2 demouser i2b2
 # ==============================================================================
 
 # Exit immediately if a command exits with a non-zero status
@@ -31,7 +31,7 @@ default_username="_USER=i2b2"
 default_password="_PASS=demouser"
 default_dbname="_DB=i2b2"
 
-if [ "$target_host" = "localhost" ]; then
+if [ "$target_host" = "local-db-ip" ]; then
     docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}')
     target_host="$docker_network_gateway_ip"
     echo "Target Server IP- $target_host"

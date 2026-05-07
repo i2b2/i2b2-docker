@@ -9,7 +9,7 @@
 #                      <TARGET_CRC_DB> <TARGET_ONT_DB> <TARGET_PM_DB> \
 #                      <TARGET_HIVE_DB> <TARGET_WD_DB>
 # Example:
-#   sh mod_env_file.sh localhost 1432 SA '<YourStrong@Passw0rd>' i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata
+#   sh mod_env_file.sh local-db-ip 1432 SA '<YourStrong@Passw0rd>' i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata
 # ==============================================================================
 
 if [ "$#" -lt 9 ]; then
@@ -39,7 +39,7 @@ default_pm_db_name="_PM_DB=i2b2pm"
 default_hive_dbname="_HIVE_DB=i2b2hive"
 default_wd_dbname="_WD_DB=i2b2workdata"
 
-if [ "$TARGET_SERVER" = "localhost" ]; then
+if [ "$TARGET_SERVER" = "local-db-ip" ]; then
     docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}')
     TARGET_SERVER=$docker_network_gateway_ip
     echo "Target Server IP- " $TARGET_SERVER 

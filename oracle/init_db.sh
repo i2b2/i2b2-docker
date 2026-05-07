@@ -10,7 +10,7 @@
 #                          <TARGET_PM_USER> <TARGET_HIVE_USER> <TARGET_WD_USER> \
 #                          <SCHEMA_PASS> <SERVICE_NAME>
 # Example:
-#   bash init_db.sh i2b2-core-server 8080 localhost 1522 I2B2DEMODATA I2B2METADATA I2B2PM I2B2HIVE I2B2WORKDATA demouser FREEPDB1
+#   bash init_db.sh i2b2-core-server 8080 local-db-ip 1522 I2B2DEMODATA I2B2METADATA I2B2PM I2B2HIVE I2B2WORKDATA demouser FREEPDB1
 # ==============================================================================
 
 # Exit immediately if a command exits with a non-zero status
@@ -56,8 +56,8 @@ else
 fi
 
 # --- 2. Local Docker Setup ---
-# If the target is localhost, spin up a fresh Oracle 23ai container
-if [ "$TARGET_SERVER" = "localhost" ]; then
+# If the target is local-db-ip, spin up a fresh Oracle 23ai container
+if [ "$TARGET_SERVER" = "local-db-ip" ]; then
     echo "Local setup detected. Starting Oracle 23ai Docker container..."
 
     docker run -d \

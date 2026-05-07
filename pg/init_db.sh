@@ -11,7 +11,7 @@
 #                 <TARGET_PM_SCHEMA> <TARGET_HIVE_SCHEMA> <TARGET_WD_SCHEMA> \
 #                 <CORE_SERVER_IP> <CORE_SERVER_PORT>
 # Example:
-#   sh init_db.sh localhost 5432 i2b2 demouser i2b2 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
+#   sh init_db.sh local-db-ip 5432 i2b2 demouser i2b2 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
 # ==============================================================================
 
 if [ "$#" -lt 12 ]; then
@@ -38,7 +38,7 @@ CORE_SERVER_PORT=${12}
 echo "Target Configuration:"
 echo "Host: $TARGET_HOST | Port: $TARGET_PORT | User: $TARGET_USER | DB: $TARGET_DB"
 
-if [ "$TARGET_HOST" = "localhost" ]; then
+if [ "$TARGET_HOST" = "local-db-ip" ]; then
     echo "Detecting local Docker network gateway..."
     docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}') 
     TARGET_HOST=$docker_network_gateway_ip

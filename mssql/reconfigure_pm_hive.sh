@@ -9,7 +9,7 @@
 #                             <TARGET_PM_DB> <TARGET_HIVE_DB> <TARGET_WD_DB> \
 #                             <TARGET_USER> <TARGET_PASS>
 # Example:
-#   sh reconfigure_pm_hive.sh i2b2-core-server 8080 localhost 1432 i2b2demodata.dbo i2b2metadata.dbo i2b2pm i2b2hive i2b2workdata.dbo SA '<YourStrong@Passw0rd>'
+#   sh reconfigure_pm_hive.sh i2b2-core-server 8080 local-db-ip 1432 i2b2demodata.dbo i2b2metadata.dbo i2b2pm i2b2hive i2b2workdata.dbo SA '<YourStrong@Passw0rd>'
 # ==============================================================================
 
 if [ "$#" -lt 11 ]; then
@@ -32,7 +32,7 @@ TARGET_WD_DB=$9
 TARGET_USER=${10}
 TARGET_PASS=${11}
 
-if [ "$TARGET_SERVER" = "localhost" ]; then
+if [ "$TARGET_SERVER" = "local-db-ip" ]; then
 
     docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}')
     TARGET_SERVER=$docker_network_gateway_ip
