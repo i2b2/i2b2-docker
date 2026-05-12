@@ -9,7 +9,7 @@
 #                                    <TARGET_PM_USER> <TARGET_HIVE_USER> <TARGET_WD_USER> \
 #                                    <SCHEMA_PASS> <SERVICE_NAME>
 # Example:
-#   sh reconfigure_pm_hive.sh i2b2-core-server 8080 local-db-ip 1522 I2B2DEMODATA I2B2METADATA I2B2PM I2B2HIVE I2B2WORKDATA demouser FREEPDB1
+#   sh reconfigure_pm_hive.sh i2b2-core-server 8080 local-db-ip 1522 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata demouser freepdb1
 # ==============================================================================
 
 if [ "$#" -lt 11 ]; then

@@ -10,7 +10,7 @@
 #                          <TARGET_PM_USER> <TARGET_HIVE_USER> <TARGET_WD_USER> \
 #                          <SCHEMA_PASS> <SERVICE_NAME>
 # Example:
-#   bash init_db.sh i2b2-core-server 8080 local-db-ip 1522 I2B2DEMODATA I2B2METADATA I2B2PM I2B2HIVE I2B2WORKDATA demouser FREEPDB1
+#   bash init_db.sh i2b2-core-server 8080 local-db-ip 1522 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata demouser FREEPDB1
 # ==============================================================================
 
 # Exit immediately if a command exits with a non-zero status
@@ -71,12 +71,15 @@ if [ "$TARGET_SERVER" = "local-db-ip" ]; then
     echo "Waiting for Oracle database to initialize (sleeping for 100 seconds)..."
     sleep 100
     echo "Oracle 23ai container is ready!"
+    DB_HOST="localhost"
+ else
+    DB_HOST="$TARGET_SERVER"   
 fi
 
 # --- 3. Create Users/Schema via SQL*Plus ---
 echo "Creating i2b2 users on remote database..."
 # Pipe the local create_users.sql script directly into the Oracle container
-docker exec -i oracle23 sqlplus -s sys/$TARGET_ORACLE_PWD@localhost:1521/$DB_SERVICE as sysdba < create_users.sql
+docker exec -i oracle23 sqlplus -s sys/$TARGET_ORACLE_PWD@localhost:1521/$SERVICE_NAME as sysdba < create_users.sql
 
 
 # --- 4. Process i2b2 Cells (Ant Builds) ---
@@ -105,9 +108,9 @@ for i in "${!cells[@]}"; do
     # Update db.properties using sed to inject environment variables
     # Note: Converted USER_NAME replacement to UPPERCASE as Oracle schemas default to uppercase
     cat "$dbproperties/db.properties" | \
-    sed "s/localhost/$TARGET_SERVER/" | \
+    sed "s/localhost/$DB_HOST/" | \
     sed "s/1521/$TARGET_PORT/" | \
-    sed "s/FREEPDB1/$DB_SERVICE/" | \
+    sed "s/FREEPDB1/$SERVICE_NAME/" | \
     sed "s/PWD/$SCHEMA_PASS/" | \
     sed "s/USER_NAME/I2B2${CELL_NAME^^}/" > db.properties
 
@@ -158,7 +161,7 @@ echo "Scenario: Production install on existing i2b2 database - Run reconfigure_p
 echo "bash reconfigure_pm_hive.sh $CORE_SERVER_IP $CORE_SERVER_PORT $TARGET_SERVER $TARGET_PORT $TARGET_CRC_USER $TARGET_ONT_USER $TARGET_PM_USER $TARGET_HIVE_USER $TARGET_WD_USER $SCHEMA_PASS $SERVICE_NAME"
 
 echo "Run mod_env_file.sh script with required arguments:"
-echo "# sh mod_env_file.sh $TARGET_SERVER $TARGET_PORT 'dummy_user' 'dummy_pass' $DB_SERVICE"
+echo "# sh mod_env_file.sh $TARGET_SERVER $TARGET_PORT 'dummy_user' 'dummy_pass' $SERVICE_NAME"
 
 echo "Run restart_containers.sh script:"
 echo "# sh restart_containers.sh"

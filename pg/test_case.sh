@@ -48,7 +48,8 @@ docker exec -i i2b2-core-server bash -c " sed -i 's/[^\x00-\x7F]//g' /opt/jboss/
 # docker exec -i i2b2-core-server bash -c "date"
 # docker exec -i i2b2-data-pgsql bash -c "date" 
 
-docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
+#Test case failure ignore
+# docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
 
 
 # running ant test cases for PM, ONT, CRC, WD, IM

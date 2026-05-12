@@ -10,7 +10,7 @@
 #                 <TARGET_CRC_DB> <TARGET_ONT_DB> <TARGET_PM_DB> \
 #                 <TARGET_HIVE_DB> <TARGET_WD_DB> <CORE_SERVER_IP> <CORE_SERVER_PORT>
 # Example:
-#   sh init_db.sh local-db-ip 1432 SA '<YourStrong@Passw0rd>' i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
+#   bash init_db.sh local-db-ip 1432 SA '<YourStrong@Passw0rd>' i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
 # ==============================================================================
 
 if [ "$#" -lt 11 ]; then
