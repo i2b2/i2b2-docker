@@ -17,10 +17,6 @@ set -e
 export i2b2_core_server_branch="${1:-master}"
 export i2b2_data_branch="${2:-master}"
 
-# Provide defaults for docker env vars if they are not set in the environment
-docker_username="${docker_username:-adityapersistent}"
-docker_reponame="${docker_reponame:-demo_adi}"
-
 core_server_image="${docker_username}/${docker_reponame}:i2b2-core-server_${i2b2_core_server_branch}"
 mssql_image="${docker_username}/${docker_reponame}:i2b2-data-mssql_${i2b2_data_branch}"
 
@@ -55,7 +51,7 @@ docker exec -i i2b2-core-server bash -c "apt-get clean && apt-get update --fix-m
 
 #cloning i2b2-core-server repo
 echo "Cloning i2b2-core-server repo (branch: $i2b2_core_server_branch)..."
-docker exec -e i2b2_core_server_branch="$i2b2_core_server_branch" -i i2b2-core-server bash -c "cd /opt/jboss/wildfly && git clone http://github.com/adityapersistent/i2b2-core-server -b $i2b2_core_server_branch"
+docker exec -e i2b2_core_server_branch="$i2b2_core_server_branch" -i i2b2-core-server bash -c "cd /opt/jboss/wildfly && git clone http://github.com/i2b2/i2b2-core-server -b $i2b2_core_server_branch"
 
 #using mssql-jdbc-8.2.2.jre8.jar jdbc mssql driver for testing
 echo "Setting up MSSQL JDBC driver..."
