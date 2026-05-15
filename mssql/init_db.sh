@@ -44,7 +44,7 @@ if [ "$TARGET_SERVER" = "local-db-ip" ]; then
     export docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}')
     export TARGET_SERVER_PORT="$docker_network_gateway_ip,$TARGET_PORT"
     echo "Targeting local environment via gateway: $TARGET_SERVER_PORT" 
-    docker run -i -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourStrong@Passw0rd>" -p 1432:1433 --name target_db_container -d adityapersistent/i2b2:custom-mssql-2019-fts  #mcr.microsoft.com/mssql/server:2019-latest
+    docker run -i -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourStrong@Passw0rd>" -p 1432:1433 --name target_db_container -d i2b2/i2b2-data-mssql:custom-mssql-2019-fts  #mcr.microsoft.com/mssql/server:2019-latest
     sleep 30 # Allow time for the local target container to initialize
     # docker exec --user root target_db_container bash -c "apt-get update && apt-get install -yq curl apt-transport-https gnupg && curl -sL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && curl -sL https://packages.microsoft.com/config/ubuntu/20.04/mssql-server-2019.list | tee /etc/apt/sources.list.d/mssql-server-2019.list && apt-get update && apt-get install -y mssql-server-fts"
     # docker restart target_db_container
