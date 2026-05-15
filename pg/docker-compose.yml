@@ -17,7 +17,7 @@ services:
       - i2b2-net
 
   i2b2-core-server:
-    image: adityapersistent/demo_adi:i2b2-core-server_master #i2b2/i2b2-core-server:${I2B2_CORE_SERVER_TAG}
+    image: i2b2/i2b2-core-server:${I2B2_CORE_SERVER_TAG}
     container_name: i2b2-core-server
     restart: unless-stopped
     environment:
@@ -73,7 +73,7 @@ services:
       - i2b2-data-pgsql
 
   i2b2-data-pgsql:
-    image: adityapersistent/demo_adi:i2b2-data-pgsql_master #i2b2/i2b2-data-pgsql:${I2B2_DATA_PGSQL_TAG} 
+    image: i2b2/i2b2-data-pgsql:${I2B2_DATA_PGSQL_TAG} 
     container_name: i2b2-data-pgsql
     restart: unless-stopped
     environment:
