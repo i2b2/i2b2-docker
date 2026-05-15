@@ -45,7 +45,7 @@ echo "Target Server IP: $TARGET_SERVER"
 # Define project directories
 BASE_DIR=$(pwd) 
 root="i2b2-data"
-dbproperties="../db.properties"
+dbproperties="db.properties"
 
 # Clone the required i2b2 data repository
 if [ ! -d "$root" ]; then
@@ -107,7 +107,7 @@ for i in "${!cells[@]}"; do
 
     # Update db.properties using sed to inject environment variables
     # Note: Converted USER_NAME replacement to UPPERCASE as Oracle schemas default to uppercase
-    cat "$dbproperties" | \
+    cat "$BASE_DIR/$dbproperties" | \
     sed "s/localhost/$DB_HOST/" | \
     sed "s/1521/$TARGET_PORT/" | \
     sed "s/FREEPDB1/$SERVICE_NAME/" | \
