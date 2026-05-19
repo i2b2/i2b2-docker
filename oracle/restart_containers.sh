@@ -8,7 +8,7 @@
 #   sh restart_containers.sh
 # ==============================================================================
 
-# docker rm -f i2b2-data-pgsql # Uncomment this line if you have space issues
+# docker rm -f i2b2-data-oracle # Uncomment this line if you have space issues
 
 # Remove existing containers (ignore errors if they do not exist)
 docker rm -f i2b2-core-server i2b2-webclient || true

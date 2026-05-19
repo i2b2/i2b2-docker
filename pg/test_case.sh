@@ -15,7 +15,7 @@ sed -i "s|i2b2/i2b2-data-pgsql:\${I2B2_DATA_PGSQL_TAG}|$pgsql_image|g" docker-co
 docker compose up -d 
 docker ps 
 #waiting for core-server and database to get started
-sleep 150
+sleep 100
 
 cd test_case_integration/
 
@@ -23,8 +23,7 @@ cd test_case_integration/
 docker cp . i2b2-core-server:/opt/jboss/wildfly/
 
 #install apt & git
-#fixing : Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
-docker exec -i i2b2-core-server bash -c "apt-get clean  && apt-get update --fix-missing"
+docker exec -i i2b2-core-server bash -c "apt-get update "
 docker exec -i i2b2-core-server bash -c "apt-get install -y ant git vim"
 
 #set timezone to EST - using old core-server image - it will set only for this terminal session
@@ -49,10 +48,8 @@ docker exec -i i2b2-core-server bash -c " sed -i 's/[^\x00-\x7F]//g' /opt/jboss/
 # docker exec -i i2b2-core-server bash -c "date"
 # docker exec -i i2b2-data-pgsql bash -c "date" 
 
-#temp fix for failing test cases - build will be successfull
-docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.pm/build.xml"
-
-docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
+#Test case failure ignore
+# docker exec -i i2b2-core-server bash -c "sed -i 's/errorProperty=\"test.failed\"/errorProperty=\"ignore.failures\"/g; s/failureProperty=\"test.failed\"/failureProperty=\"ignore.failures\"/g' /opt/jboss/wildfly/i2b2-core-server/edu.harvard.i2b2.crc/build.xml"
 
 
 # running ant test cases for PM, ONT, CRC, WD, IM

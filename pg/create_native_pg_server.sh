@@ -1,11 +1,43 @@
 #!/bin/bash
 
+# ==============================================================================
+# Script Name: create_native_pg_server.sh
+# Description: Installs and configures a native PostgreSQL server for i2b2.
+#              Sets up the database, user, scram-sha-256 encryption, and 
+#              configures network access including Docker subnets.
+# Usage: 
+#   bash create_native_pg_server.sh
+# Configuration:
+#   Can override default parameters by exporting variables before running:
+#   export POSTGRES_VERSION=16; export DB_NAME="i2b2" ...
+# ==============================================================================
+
+# Exit immediately if a command exits with a non-zero status
 set -e
 
-POSTGRES_VERSION=16
 DB_NAME="i2b2"
 DB_USER="i2b2"
 DB_PASSWORD="demouser"
+source /etc/os-release
+
+case "$VERSION_ID" in
+    "20.04")
+        POSTGRES_VERSION=12
+        ;;
+    "22.04")
+        POSTGRES_VERSION=14
+        ;;
+    "24.04")
+        POSTGRES_VERSION=16
+        ;;
+    *)
+        echo "Unsupported Ubuntu version: $VERSION_ID"
+        exit 1
+        ;;
+esac
+
+echo "Installing PostgreSQL $POSTGRES_VERSION on Ubuntu $VERSION_ID"
+
 
 PG_CONF="/etc/postgresql/$POSTGRES_VERSION/main/postgresql.conf"
 PG_HBA="/etc/postgresql/$POSTGRES_VERSION/main/pg_hba.conf"
@@ -16,6 +48,11 @@ sudo apt-get update
 echo "Installing PostgreSQL $POSTGRES_VERSION..."
 sudo apt-get install -y postgresql-$POSTGRES_VERSION postgresql-contrib-$POSTGRES_VERSION
 
+if [ ! -f "$PG_CONF" ] || [ ! -f "$PG_HBA" ]; then
+    echo "Error: PostgreSQL configuration files not found at expected paths."
+    exit 1
+fi
+
 echo "Temporarily allowing local trust for postgres..."
 sudo sed -i "s/^local.*postgres.*peer/local all postgres trust/" $PG_HBA
 
@@ -23,9 +60,17 @@ echo "Restarting PostgreSQL..."
 sudo systemctl restart postgresql
 
 echo "Waiting for PostgreSQL to become ready..."
-until pg_isready -U postgres > /dev/null 2>&1; do
-  sleep 2
+MAX_RETRIES=15
+RETRY_COUNT=0
+until pg_isready -U postgres > /dev/null 2>&1 || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do
+    sleep 2
+    RETRY_COUNT=$((RETRY_COUNT + 1))
 done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    echo "Error: PostgreSQL failed to start in time."
+    exit 1
+fi
 
 echo "Configuring PostgreSQL SCRAM password encryption..."
 if grep -q "^#password_encryption" $PG_CONF; then
@@ -36,10 +81,13 @@ fi
 
 echo "Creating database and users..."
 
-sudo -u postgres psql <<EOF
-ALTER USER postgres PASSWORD '$DB_PASSWORD';
+# Create database safely if it doesn't exist
+if ! sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_NAME'" | grep -q 1; then
+    sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;"
+fi
 
-CREATE DATABASE $DB_NAME;
+sudo -u postgres psql -v ON_ERROR_STOP=1 <<EOF
+ALTER USER postgres PASSWORD '$DB_PASSWORD';
 
 DO \$\$
 BEGIN

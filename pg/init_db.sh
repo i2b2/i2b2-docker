@@ -1,53 +1,76 @@
-# prerequisite - i2b2 docker demo working
-#sh init_db.sh dummy_host 5432 i2b2 demouser i2b2 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
+#!/bin/bash
 
-#sh init_db.sh target_ip target_port target_username target_password target_db_name target_crc_schema target_ont_schema target_pm_schema target_hive_schema target_wd_schema core_server_ip core_server_port
+# ==============================================================================
+# Script Name: init_db.sh
+# Description: Initializes an empty production database with i2b2 pgsql 
+#              local docker container database by exporting and importing dumps.
+# Prerequisite: i2b2 docker demo must be working and running.
+# Usage: 
+#   sh init_db.sh <TARGET_IP> <TARGET_PORT> <TARGET_USER> <TARGET_PASS> \
+#                 <TARGET_DB> <TARGET_CRC_SCHEMA> <TARGET_ONT_SCHEMA> \
+#                 <TARGET_PM_SCHEMA> <TARGET_HIVE_SCHEMA> <TARGET_WD_SCHEMA> \
+#                 <CORE_SERVER_IP> <CORE_SERVER_PORT>
+# Example:
+#   bash init_db.sh local-db-ip 5432 i2b2 demouser i2b2 i2b2demodata i2b2metadata i2b2pm i2b2hive i2b2workdata i2b2-core-server 8080
+# ==============================================================================
 
-host=$1
-port=$2
-username=$3
-password=$4
-dbname=$5
-
-crc_db_schema=$6
-ont_db_schema=$7
-pm_db_schema=$8
-hive_db_schema=$9
-wd_db_schema=${10}
-
-core_server_ip=${11}
-core_server_port=${12}
-
-echo "Host- $host Port- $port Username- $username Password- $password DBname- $dbname"
-if [ "$host" = "dummy_host" ]; then
-  
-    docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}') 
-    host=$docker_network_gateway_ip
-    sh create_native_pg_server.sh #install native postgresql database locally and update the configuration 
+if [ "$#" -lt 12 ]; then
+    echo "Error: Missing arguments. 12 arguments are required."
+    echo "Usage: $0 TARGET_IP TARGET_PORT TARGET_USER TARGET_PASS TARGET_DB TARGET_CRC_SCHEMA TARGET_ONT_SCHEMA TARGET_PM_SCHEMA TARGET_HIVE_SCHEMA TARGET_WD_SCHEMA CORE_SERVER_IP CORE_SERVER_PORT"
+    exit 1
 fi
 
-echo "waiting for database & docker container to get start"
+TARGET_HOST=$1
+TARGET_PORT=$2
+TARGET_USER=$3
+TARGET_PASS=$4
+TARGET_DB=$5
+
+TARGET_CRC_SCHEMA=$6
+TARGET_ONT_SCHEMA=$7
+TARGET_PM_SCHEMA=$8
+TARGET_HIVE_SCHEMA=$9
+TARGET_WD_SCHEMA=${10}
+
+CORE_SERVER_IP=${11}
+CORE_SERVER_PORT=${12}
+
+echo "Target Configuration:"
+echo "Host: $TARGET_HOST | Port: $TARGET_PORT | User: $TARGET_USER | DB: $TARGET_DB"
+
+if [ "$TARGET_HOST" = "local-db-ip" ]; then
+    echo "Detecting local Docker network gateway..."
+    docker_network_gateway_ip=$(docker network inspect i2b2-net -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}') 
+    TARGET_HOST=$docker_network_gateway_ip
+    
+    echo "Installing native postgresql database locally and updating configuration..."
+    bash create_native_pg_server.sh
+fi
+
+echo "Waiting for database & docker container to start (180 seconds)..."
 sleep 180
 
 echo "Dump process started"
-
-docker exec -i -e PG_PASSWORD=demouser i2b2-data-pgsql pg_dump -U postgres -d i2b2 -F c --no-owner --no-acl -f i2b2_db_backup.dump
-#dump - 1min approx.
+# dump - 1min approx.
+docker exec -i -e PGPASSWORD=demouser i2b2-data-pgsql pg_dump -U postgres -d i2b2 -F c --no-owner --no-acl -f i2b2_db_backup.dump
 echo "Dump process completed"
-echo "restore process started"
 
-echo $host $port $username $dbname $password
-docker exec -i -e PGPASSWORD=$password i2b2-data-pgsql pg_restore  -h $host -p $port -U $username -d $dbname  -F c --no-owner i2b2_db_backup.dump
+echo "Restore process started to $TARGET_HOST:$TARGET_PORT ($TARGET_DB)..."
+# within 2 minutes
+docker exec -i -e PGPASSWORD="$TARGET_PASS" i2b2-data-pgsql pg_restore -h "$TARGET_HOST" -p "$TARGET_PORT" -U "$TARGET_USER" -d "$TARGET_DB" -F c --no-owner i2b2_db_backup.dump
 
 echo "Restore process completed"
-#within 2 minutes
 
 echo "Completed backup and restore for all the databases."
-echo "Updating hive and pm cell for production database"
-sh upgrade_pm_hive.sh $host $port $username $password $dbname $crc_db_schema $ont_db_schema $pm_db_schema $hive_db_schema $wd_db_schema $core_server_ip $core_server_port
 
-echo "run mod_env_file.sh script with required arguments"
-# sh mod_env_file.sh $host $port $username $password $dbname
-echo "run restart_containers.sh script"
-# sh restart_containers.sh
+echo "================================================="
+echo "Next steps:"
+
+echo "Scenario: Production install on existing i2b2 database - Run reconfigure_pm_hive.sh script with required arguments:"
+echo  "sh reconfigure_pm_hive.sh $TARGET_HOST $TARGET_PORT $TARGET_USER $TARGET_PASS $TARGET_DB $TARGET_CRC_SCHEMA $TARGET_ONT_SCHEMA $TARGET_PM_SCHEMA $TARGET_HIVE_SCHEMA $TARGET_WD_SCHEMA $CORE_SERVER_IP $CORE_SERVER_PORT"
+
+echo "Run mod_env_file.sh script with required arguments:"
+echo "sh mod_env_file.sh $TARGET_HOST $TARGET_PORT $TARGET_USER '$TARGET_PASS' $TARGET_DB"
+echo "Run restart_containers.sh script:"
+echo "sh restart_containers.sh"
 
