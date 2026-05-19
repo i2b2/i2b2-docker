@@ -6,7 +6,7 @@
 #              Sets up the database, user, scram-sha-256 encryption, and 
 #              configures network access including Docker subnets.
 # Usage: 
-#   sh create_native_pg_server.sh
+#   bash create_native_pg_server.sh
 # Configuration:
 #   Can override default parameters by exporting variables before running:
 #   export POSTGRES_VERSION=16; export DB_NAME="i2b2" ...
@@ -15,10 +15,29 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-POSTGRES_VERSION=16
 DB_NAME="i2b2"
 DB_USER="i2b2"
 DB_PASSWORD="demouser"
+source /etc/os-release
+
+case "$VERSION_ID" in
+    "20.04")
+        POSTGRES_VERSION=12
+        ;;
+    "22.04")
+        POSTGRES_VERSION=14
+        ;;
+    "24.04")
+        POSTGRES_VERSION=16
+        ;;
+    *)
+        echo "Unsupported Ubuntu version: $VERSION_ID"
+        exit 1
+        ;;
+esac
+
+echo "Installing PostgreSQL $POSTGRES_VERSION on Ubuntu $VERSION_ID"
+
 
 PG_CONF="/etc/postgresql/$POSTGRES_VERSION/main/postgresql.conf"
 PG_HBA="/etc/postgresql/$POSTGRES_VERSION/main/pg_hba.conf"

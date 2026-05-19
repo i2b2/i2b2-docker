@@ -44,7 +44,7 @@ if [ "$TARGET_HOST" = "local-db-ip" ]; then
     TARGET_HOST=$docker_network_gateway_ip
     
     echo "Installing native postgresql database locally and updating configuration..."
-    sh create_native_pg_server.sh
+    bash create_native_pg_server.sh
 fi
 
 echo "Waiting for database & docker container to start (180 seconds)..."
@@ -70,7 +70,7 @@ echo "Scenario: Production install on existing i2b2 database - Run reconfigure_p
 echo  "sh reconfigure_pm_hive.sh $TARGET_HOST $TARGET_PORT $TARGET_USER $TARGET_PASS $TARGET_DB $TARGET_CRC_SCHEMA $TARGET_ONT_SCHEMA $TARGET_PM_SCHEMA $TARGET_HIVE_SCHEMA $TARGET_WD_SCHEMA $CORE_SERVER_IP $CORE_SERVER_PORT"
 
 echo "Run mod_env_file.sh script with required arguments:"
-echo "# sh mod_env_file.sh $TARGET_HOST $TARGET_PORT $TARGET_USER '$TARGET_PASS' $TARGET_DB"
+echo "sh mod_env_file.sh $TARGET_HOST $TARGET_PORT $TARGET_USER '$TARGET_PASS' $TARGET_DB"
 echo "Run restart_containers.sh script:"
-echo "# sh restart_containers.sh"
+echo "sh restart_containers.sh"
 
