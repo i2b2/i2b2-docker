@@ -17,8 +17,13 @@ set -e
 export i2b2_core_server_branch="${1:-master}"
 export i2b2_data_branch="${2:-master}"
 
-core_server_image="${docker_username}/${docker_reponame}:i2b2-core-server_${i2b2_core_server_branch}"
-oracle_image="${docker_username}/${docker_reponame}:i2b2-data-oracle_${i2b2_data_branch}"
+# Sanitize branch names by replacing '/' with '-' for valid Docker tags
+safe_core_branch=$(echo "$i2b2_core_server_branch" | tr '/' '-')
+safe_data_branch=$(echo "$i2b2_data_branch" | tr '/' '-')
+
+# Build the image variables using the sanitized tags
+core_server_image="${docker_username}/${docker_reponame}:i2b2-core-server_${safe_core_branch}"
+oracle_image="${docker_username}/${docker_reponame}:i2b2-data-oracle_${safe_data_branch}"
 
 echo "=========================================="
 echo " Setting up Docker images"
